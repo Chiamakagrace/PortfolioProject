@@ -15,6 +15,19 @@ And dea.date = vac.date
 Where dea.continent is not null
 Order by 2,3
 
+  --2-
+Select dea.continent, dea.location, dea.date, dea.population
+, MAX(vac.total_vaccinations) as RollingPeopleVaccinated
+--, (RollingPeopleVaccinated/population)*100
+From PortfolioProject..CovidDeaths dea
+Join PortfolioProject..CovidVaccinations vac
+	On dea.location = vac.location
+	and dea.date = vac.date
+where dea.continent is not null 
+group by dea.continent, dea.location, dea.date, dea.population
+order by 1,2,3
+
+  
 --Looking At Total Population Vs  Sum of newVacination
 Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
 SUM(CAST(vac.new_vaccinations as int))  OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS Running_Vaccination,
